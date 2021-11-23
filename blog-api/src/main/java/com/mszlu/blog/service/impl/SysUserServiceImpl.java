@@ -8,6 +8,7 @@ import com.mszlu.blog.service.SysUserService;
 import com.mszlu.blog.vo.ErrorCode;
 import com.mszlu.blog.vo.LoginUserVo;
 import com.mszlu.blog.vo.Result;
+import com.mszlu.blog.vo.UserVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,22 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     LoginService loginService;
 
+
+    @Override
+    public UserVo findUserVoById(Long id) {
+        SysUser sysUser = sysUserMapper.selectById(id);
+        if (sysUser == null) {
+            sysUser = new SysUser();
+            sysUser.setId(1L);
+            sysUser.setAvatar("/static/img/logo.b3a48c0.png");
+            sysUser.setNickname("码神之路");
+        }
+        UserVo userVo = new UserVo();
+        BeanUtils.copyProperties(sysUser,userVo);
+
+
+        return userVo;
+    }
 
     @Override
     public SysUser findUserById(Long id) {
