@@ -12,6 +12,7 @@ import com.mszlu.blog.vo.CommentVo;
 import com.mszlu.blog.vo.Result;
 import com.mszlu.blog.vo.UserVo;
 import com.mszlu.blog.vo.params.CommentParam;
+import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -60,7 +61,7 @@ public class CommentsServiceImpl implements CommentsService {
         return Result.success(null);
     }
 
-    private List<CommentVo> copyList(List<Comment> comments) {
+    public List<CommentVo> copyList(List<Comment> comments) {
         List<CommentVo> commentVoList = new ArrayList<>();
         for (Comment comment : comments) {
             commentVoList.add(copy(comment));
@@ -68,7 +69,26 @@ public class CommentsServiceImpl implements CommentsService {
         return commentVoList;
     }
 
-    private CommentVo copy(Comment comment) {
+//    public CommentVo copy(Comment comment){
+//        CommentVo commentVo = new CommentVo();
+//        BeanUtils.copyProperties(comment,commentVo);
+//        //时间格式化
+//        commentVo.setCreateDate(new DateTime(comment.getCreateDate()).toString("yyyy-MM-dd HH:mm"));
+//        Long authorId = comment.getAuthorId();
+//        UserVo userVo = sysUserService.findUserVoById(authorId);
+//        commentVo.setAuthor(userVo);
+//        //评论的评论
+//        List<CommentVo> commentVoList = findCommentsByParentId(comment.getId());
+//        commentVo.setChildrens(commentVoList);
+//        if (comment.getLevel() > 1) {
+//            Long toUid = comment.getToUid();
+//            UserVo toUserVo = sysUserService.findUserVoById(toUid);
+//            commentVo.setToUser(toUserVo);
+//        }
+//        return commentVo;
+//    }
+
+    public CommentVo copy(Comment comment) {
         CommentVo commentVo = new CommentVo();
         BeanUtils.copyProperties(comment, commentVo);
 //        作者信息
@@ -81,21 +101,17 @@ public class CommentsServiceImpl implements CommentsService {
             Long id = comment.getId();
             List<CommentVo> commentVoList = findCommentsByParentId(id);
             commentVo.setChildrens(commentVoList);
-
         }
 //        给谁评论
         if (level > 1) {
-            Long toUid = comment.getAuthorId();
+            Long toUid = comment.getToUid();
             UserVo toUserVo = sysUserService.findUserVoById(toUid);
-            commentVo.setAuthor(toUserVo);
+            commentVo.setToUser(toUserVo);
         }
-
         return commentVo;
-
-
     }
 
-    private List<CommentVo> findCommentsByParentId(Long id) {
+    public List<CommentVo> findCommentsByParentId(Long id) {
         LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper();
         queryWrapper.eq(Comment::getParentId, id);
         queryWrapper.eq(Comment::getLevel, 2);

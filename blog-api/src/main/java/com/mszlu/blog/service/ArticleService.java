@@ -3,6 +3,7 @@ package com.mszlu.blog.service;
 import com.mszlu.blog.vo.ArticleBodyVo;
 import com.mszlu.blog.vo.ArticleVo;
 import com.mszlu.blog.vo.Result;
+import com.mszlu.blog.vo.params.ArticleParam;
 import com.mszlu.blog.vo.params.PageParams;
 import org.springframework.stereotype.Service;
 
@@ -24,4 +25,6 @@ public interface ArticleService {
    Result findArticleById(Long id);
 
     ArticleBodyVo findArticleBody(Long id);
+
+    Result publish(ArticleParam articleParam);
 }
