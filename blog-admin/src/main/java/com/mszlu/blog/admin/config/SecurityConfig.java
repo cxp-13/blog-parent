@@ -24,10 +24,20 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Configuration
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SecurityUserService securityUserService;
 
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication().withUser("admin").roles("admin")
+//                .password("$2a$10$RZECQ90DjOT/t1mhnXsl5.XSuZWc0Sa1XduPxj2rb4yaSYcje3nWW")
+//                .and()
+//                .withUser("mszlu").roles("user")
+//                .password("$2a$10$RZECQ90DjOT/t1mhnXsl5.XSuZWc0Sa1XduPxj2rb4yaSYcje3nWW");
+//
+//    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -39,16 +49,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         String mszlu = new BCryptPasswordEncoder().encode("mszlu");
         System.out.println(mszlu);
     }
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        super.configure(web);
-//    }
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(securityUserService);
-//    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        http.userDetailsService(securityUserService);
+
         http.authorizeRequests() //开启登录认证
 //                .antMatchers("/user/findAll").hasRole("admin") //访问接口需要admin的角色
                 .antMatchers("/css/**").permitAll()

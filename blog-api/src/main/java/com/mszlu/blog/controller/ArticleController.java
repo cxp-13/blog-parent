@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+//@RequestMapping(value = "articles", produces = "text/plain;charset=UTF-8")
 @RequestMapping("articles")
 public class ArticleController {
     @Autowired
@@ -24,14 +25,14 @@ public class ArticleController {
      */
     @PostMapping
     @LogAnnotation(module = "文章", operater = "获取文章列表")
-    @Cache(expire = 5 * 60 * 1000,name = "listArticle")
+    @Cache(expire = 5 * 60 * 1000, name = "listArticle")
     public Result listArticle(@RequestBody PageParams pageParams) {
         System.out.println("pageParams==>" + pageParams);
         return articleService.listArticle(pageParams);
     }
 
     @PostMapping("hot")
-    @Cache(expire = 5 * 60 * 1000,name = "hot_article")
+    @Cache(expire = 5 * 60 * 1000, name = "hot_article")
     public Result hotArticle() {
         int limit = 5;
         return articleService.hotArticle(limit);
@@ -55,10 +56,9 @@ public class ArticleController {
     }
 
     @PostMapping("publish")
-    public Result publish(@RequestBody ArticleParam articleParam){
+    public Result publish(@RequestBody ArticleParam articleParam) {
         return articleService.publish(articleParam);
     }
-
 
 
 }

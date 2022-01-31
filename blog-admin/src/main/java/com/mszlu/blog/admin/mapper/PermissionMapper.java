@@ -11,4 +11,7 @@ public interface PermissionMapper extends BaseMapper<Permission> {
 
     @Select("select * from ms_permission where id in (select permission_id from ms_admin_permission where admin_id=#{adminId})")
     List<Permission> findPermissionsByAdminId(Long adminId);
+
+    @Select(" select * from ms_permission where id in (select permission_id from ms_role_permission where role_id=#{roleId})")
+    List<Permission> findPermissionByRole(Integer roleId);
 }
