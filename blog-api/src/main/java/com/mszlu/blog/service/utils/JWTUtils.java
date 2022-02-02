@@ -1,10 +1,9 @@
 package com.mszlu.blog.service.utils;
 
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 
+import javax.xml.crypto.Data;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +19,7 @@ public class JWTUtils {
                 .signWith(SignatureAlgorithm.HS256, jwtToken) // 签发算法，秘钥为jwtToken
                 .setClaims(claims) // body数据，要唯一，自行设置
                 .setIssuedAt(new Date()) // 设置签发时间
-                .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 60 * 1000));// 一天的有效时间
+                .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 60 * 1000));// 一天的有效时间（其实应该是60天）
         String token = jwtBuilder.compact();
         return token;
     }
@@ -35,12 +34,4 @@ public class JWTUtils {
         return null;
 
     }
-
-    public static void main(String[] args) {
-        String token = JWTUtils.createToken(100L);
-        System.out.println(token);
-        Map<String, Object> map = JWTUtils.checkToken(token);
-        System.out.println(map.get("userId"));
-    }
-
 }

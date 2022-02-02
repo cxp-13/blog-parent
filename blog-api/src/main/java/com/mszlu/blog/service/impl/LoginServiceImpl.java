@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+
 @Service
 @Transactional
 public class LoginServiceImpl implements LoginService {
@@ -102,6 +103,7 @@ public class LoginServiceImpl implements LoginService {
         sysUser.setStatus("");
         sysUser.setEmail("");
         this.sysUserService.save(sysUser);
+        System.out.println("注册的id————————————————》》》"+sysUser.getId());
         String token = JWTUtils.createToken(sysUser.getId());
         redisTemplate.opsForValue().set("TOKEN_" + token, JSON.toJSONString(sysUser), 1, TimeUnit.DAYS);
         return Result.success(token);

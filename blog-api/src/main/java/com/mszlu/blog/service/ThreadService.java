@@ -12,6 +12,7 @@ public class ThreadService {
     public void updateArticleViewCount(ArticleMapper articleMapper, Article article) {
         int viewCounts = article.getViewCounts();
         Article articleUpdate = new Article();
+//        只需要在新对象上，对需要更新的字段赋值新的值就行了，不用管其他原封不动的字段
         articleUpdate.setViewCounts(viewCounts + 1);
         LambdaUpdateWrapper<Article> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(Article::getId, article.getId());

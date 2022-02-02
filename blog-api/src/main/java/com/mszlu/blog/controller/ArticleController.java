@@ -25,6 +25,8 @@ public class ArticleController {
      */
     @PostMapping
     @LogAnnotation(module = "文章", operater = "获取文章列表")
+//    在进入listArticle()前先进入CacheAspect类去查redis里面有没有。
+//    Bug:如果有修改(up主没实现)或者观看，相应数据的更新，得等redis缓存过后才能显示
     @Cache(expire = 5 * 60 * 1000, name = "listArticle")
     public Result listArticle(@RequestBody PageParams pageParams) {
         System.out.println("pageParams==>" + pageParams);

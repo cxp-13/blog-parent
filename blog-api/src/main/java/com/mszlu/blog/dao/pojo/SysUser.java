@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public  class SysUser {
-//    @TableId(type = IdType.ASSIGN_ID)
+public class SysUser {
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
-    private  String account;
+    private String account;
 
     private Integer admin;
 

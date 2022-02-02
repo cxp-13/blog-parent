@@ -1,0 +1,16 @@
+@startuml
+
+class Article
+class ArticleParam
+class ArticleTag
+class ArticleBody
+class CategoryVo
+class ArticleBodyParam
+
+ArticleParam --o Article
+ArticleParam --o ArticleTag
+ArticleParam --o ArticleBody
+
+
+
+@enduml
