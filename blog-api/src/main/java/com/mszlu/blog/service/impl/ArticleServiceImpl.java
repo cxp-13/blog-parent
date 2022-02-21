@@ -8,10 +8,7 @@ import com.mszlu.blog.dao.dos.Archives;
 import com.mszlu.blog.dao.mapper.ArticleBodyMapper;
 import com.mszlu.blog.dao.mapper.ArticleMapper;
 import com.mszlu.blog.dao.mapper.ArticleTagMapper;
-import com.mszlu.blog.dao.pojo.Article;
-import com.mszlu.blog.dao.pojo.ArticleBody;
-import com.mszlu.blog.dao.pojo.ArticleTag;
-import com.mszlu.blog.dao.pojo.SysUser;
+import com.mszlu.blog.dao.pojo.*;
 import com.mszlu.blog.service.*;
 import com.mszlu.blog.service.utils.UserThreadLocal;
 import com.mszlu.blog.vo.*;
@@ -19,6 +16,7 @@ import com.mszlu.blog.vo.params.ArticleParam;
 import com.mszlu.blog.vo.params.PageParams;
 import org.apache.logging.log4j.core.impl.ReusableLogEventFactory;
 import org.joda.time.DateTime;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +43,8 @@ public class ArticleServiceImpl implements ArticleService {
     private ThreadService threadService;
     @Autowired
     private ArticleTagMapper articleTagMapper;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Override
     public Result listArticle(PageParams pageParams) {
@@ -177,6 +177,7 @@ public class ArticleServiceImpl implements ArticleService {
         SysUser sysUser = UserThreadLocal.get();
 //把articleParam的部分属性放到article中
         Article article = new Article();
+
         article.setAuthorId(sysUser.getId());
         article.setWeight(Article.Article_Common);
         article.setViewCounts(0);
@@ -185,7 +186,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setCommentCounts(0);
         article.setCreateDate(System.currentTimeMillis());
         article.setCategoryId(Long.parseLong(articleParam.getCategory().getId()));
-
+//插入默认id是雪花算法生成
         articleMapper.insert(article);
 //把articleParam的标签部分放到articleTag中
         List<TagVo> tags = articleParam.getTags();
@@ -209,6 +210,11 @@ public class ArticleServiceImpl implements ArticleService {
 //        防止精度丢失
         Map<String, String> map = new HashMap<>();
         map.put("id", article.getId().toString());
+
+        ArticleMessage message = new ArticleMessage();
+        message.setArticleId(article.getId());
+        rabbitTemplate.convertAndSend("topic_mszlu_exchange", "xxx.clearCache.xxx", message);
+
         return Result.success(map);
 
     }

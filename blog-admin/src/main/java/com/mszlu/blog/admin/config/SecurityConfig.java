@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Configuration
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SecurityUserService securityUserService;

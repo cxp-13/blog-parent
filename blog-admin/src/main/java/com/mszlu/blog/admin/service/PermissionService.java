@@ -25,7 +25,6 @@ public class PermissionService {
 
         ArrayList<PermissionVo> permissionVos = new ArrayList<>();
         PermissionVo permissionVo;
-
         Page<Permission> page = new Page<>(pageParam.getCurrentPage(), pageParam.getPageSize());
         LambdaQueryWrapper<Permission> queryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(pageParam.getQueryString())) {

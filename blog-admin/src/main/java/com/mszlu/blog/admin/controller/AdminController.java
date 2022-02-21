@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     @Autowired
     private PermissionService permissionService;
-//    @PreAuthorize("hasRole('ADMIN')")
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("permission/permissionList")
     public Result listPermission(@RequestBody PageParam pageParam) {
         return permissionService.listPermission(pageParam);

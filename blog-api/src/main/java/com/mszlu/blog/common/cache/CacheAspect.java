@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
+import java.util.Arrays;
 
 @Aspect
 @Component
@@ -43,6 +44,7 @@ public class CacheAspect {
 
             Class[] parameterTypes = new Class[pjp.getArgs().length];
             Object[] args = pjp.getArgs();
+            Arrays.stream(args).forEach(arg -> log.info("arg---------->{}" + arg));
             //参数
             String params = "";
             for (int i = 0; i < args.length; i++) {

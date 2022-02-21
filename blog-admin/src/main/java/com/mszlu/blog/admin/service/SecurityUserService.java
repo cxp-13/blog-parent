@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-
 public class SecurityUserService implements UserDetailsService {
     @Autowired
     private AdminService adminService;
@@ -30,6 +29,7 @@ public class SecurityUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("username----->" + username);
         ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
         Admin admin = adminService.findAdminByUsername(username);
@@ -37,16 +37,16 @@ public class SecurityUserService implements UserDetailsService {
         if (admin == null) {
             return null;
         }
-//        List<Role> roles = roleMapper.findRoleListByUserId(admin.getId());
-//        System.out.println(roles);
-//        for (Role role : roles) {
-//            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+role.getRoleKeyword()));
-////            List<Permission> permissions = permissionMapper.findPermissionByRole(role.getId());
-////            for (Permission permission : permissions) {
-////                grantedAuthorities.add(new SimpleGrantedAuthority(permission.getPermissionKeyword()));
-////            }
-//        }
-//        System.out.println(grantedAuthorities);
+        List<Role> roles = roleMapper.findRoleListByUserId(admin.getId());
+        System.out.println(roles);
+        for (Role role : roles) {
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+role.getRoleKeyword()));
+            List<Permission> permissions = permissionMapper.findPermissionByRole(role.getId());
+            for (Permission permission : permissions) {
+                grantedAuthorities.add(new SimpleGrantedAuthority(permission.getPermissionKeyword()));
+            }
+        }
+        System.out.println(grantedAuthorities);
         UserDetails userDetails = new User(username, admin.getPassword(), grantedAuthorities);
 
         return userDetails;
