@@ -174,29 +174,55 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Result publish(ArticleParam articleParam) {
-        SysUser sysUser = UserThreadLocal.get();
-//把articleParam的部分属性放到article中
-        Article article = new Article();
 
-        article.setAuthorId(sysUser.getId());
-        article.setWeight(Article.Article_Common);
-        article.setViewCounts(0);
-        article.setTitle(articleParam.getTitle());
-        article.setSummary(articleParam.getSummary());
-        article.setCommentCounts(0);
-        article.setCreateDate(System.currentTimeMillis());
-        article.setCategoryId(Long.parseLong(articleParam.getCategory().getId()));
+        SysUser sysUser = UserThreadLocal.get();
+        boolean isEdit = articleParam.getId() == null ? false : true;
+        Article article = new Article();
+//把articleParam的部分属性放到article中
+        if (isEdit) {
+
+            article.setId(articleParam.getId());
+            article.setTitle(articleParam.getTitle());
+            article.setSummary(articleParam.getSummary());
+            article.setCategoryId(Long.parseLong(articleParam.getCategory().getId()));
+
+
+        } else {
+
+
+            article.setAuthorId(sysUser.getId());
+            article.setWeight(Article.Article_Common);
+            article.setViewCounts(0);
+            article.setTitle(articleParam.getTitle());
+            article.setSummary(articleParam.getSummary());
+            article.setCommentCounts(0);
+            article.setCreateDate(System.currentTimeMillis());
+            article.setCategoryId(Long.parseLong(articleParam.getCategory().getId()));
+            articleMapper.insert(article);
+
+
+        }
+
 //插入默认id是雪花算法生成
-        articleMapper.insert(article);
+
+
 //把articleParam的标签部分放到articleTag中
+        if (isEdit) {
+            LambdaQueryWrapper<ArticleTag> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(ArticleTag::getArticleId, article.getId());
+            articleTagMapper.delete(queryWrapper);
+        }
+
         List<TagVo> tags = articleParam.getTags();
         if (tags != null) {
             for (TagVo tag : tags) {
-                Long articleId = article.getId();
+
                 ArticleTag articleTag = new ArticleTag();
-                articleTag.setArticleId(articleId);
+                articleTag.setArticleId(article.getId());
                 articleTag.setTagId(Long.parseLong(tag.getId()));
                 articleTagMapper.insert(articleTag);
+
+
             }
         }
 //把articleParam的body部分放到ArticleBody中
@@ -204,9 +230,21 @@ public class ArticleServiceImpl implements ArticleService {
         articleBody.setArticleId(article.getId());
         articleBody.setContent(articleParam.getBody().getContent());
         articleBody.setContentHtml(articleParam.getBody().getContentHtml());
-        articleBodyMapper.insert(articleBody);
-        article.setBodyId(articleBody.getId());
-        articleMapper.updateById(article);
+        if (isEdit) {
+            LambdaQueryWrapper<ArticleBody> bodyLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            bodyLambdaQueryWrapper.eq(ArticleBody::getArticleId, article.getId());
+
+            articleBodyMapper.update(articleBody, bodyLambdaQueryWrapper);
+
+            ArticleBody one = articleBodyMapper.selectOne(bodyLambdaQueryWrapper);
+            article.setBodyId(articleBody.getId());
+
+        } else {
+            articleBodyMapper.insert(articleBody);
+            article.setBodyId(articleBody.getId());
+        }
+
+
 //        防止精度丢失
         Map<String, String> map = new HashMap<>();
         map.put("id", article.getId().toString());
