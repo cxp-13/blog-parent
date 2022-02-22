@@ -185,7 +185,7 @@ public class ArticleServiceImpl implements ArticleService {
             article.setTitle(articleParam.getTitle());
             article.setSummary(articleParam.getSummary());
             article.setCategoryId(Long.parseLong(articleParam.getCategory().getId()));
-            articleMapper.updateById(article);
+
 
 
         } else {
@@ -245,7 +245,7 @@ public class ArticleServiceImpl implements ArticleService {
             article.setBodyId(articleBody.getId());
         }
 
-
+        articleMapper.updateById(article);
 //        防止精度丢失
         Map<String, String> map = new HashMap<>();
         map.put("id", article.getId().toString());

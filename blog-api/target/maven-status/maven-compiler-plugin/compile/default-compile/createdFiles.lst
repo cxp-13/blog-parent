@@ -4,6 +4,7 @@ com\mszlu\blog\service\impl\SysUserServiceImpl.class
 com\mszlu\blog\service\utils\IpUtils.class
 com\mszlu\blog\config\WebMVCConfig.class
 com\mszlu\blog\vo\ErrorCode.class
+com\mszlu\blog\rabbitmqconsumer\ArticleListener.class
 com\mszlu\blog\vo\Result.class
 com\mszlu\blog\service\impl\LoginServiceImpl.class
 com\mszlu\blog\service\ThreadService.class
@@ -29,8 +30,10 @@ com\mszlu\blog\dao\pojo\ArticleTag.class
 com\mszlu\blog\vo\UserVo.class
 com\mszlu\blog\controller\UserController.class
 com\mszlu\blog\dao\pojo\Tag.class
+com\mszlu\blog\config\RabbitMqConfiguration.class
 com\mszlu\blog\dao\pojo\Article.class
 com\mszlu\blog\controller\CategoryController.class
+com\mszlu\blog\dao\pojo\ArticleMessage.class
 com\mszlu\blog\dao\pojo\SysUser.class
 com\mszlu\blog\dao\mapper\CommentMapper.class
 com\mszlu\blog\service\CategoryService.class

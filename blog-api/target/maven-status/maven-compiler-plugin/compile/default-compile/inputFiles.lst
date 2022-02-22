@@ -14,8 +14,10 @@ D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\dao\mapper\CommentM
 D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\config\MybatisPlusConfig.java
 D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\vo\ArticleVo.java
 D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\vo\params\PageParams.java
+D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\rabbitmqconsumer\ArticleListener.java
 D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\service\impl\SysUserServiceImpl.java
 D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\service\impl\LoginServiceImpl.java
+D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\dao\pojo\ArticleMessage.java
 D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\common\cache\Cache.java
 D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\vo\params\CommentParam.java
 D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\dao\pojo\Category.java
@@ -62,6 +64,7 @@ D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\controller\LoginCon
 D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\service\ArticleService.java
 D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\vo\UserVo.java
 D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\dao\mapper\ArticleTagMapper.java
+D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\config\RabbitMqConfiguration.java
 D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\config\ThreadPoolConfig.java
 D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\service\utils\UserThreadLocal.java
 D:\project\blog-parent\blog-api\src\main\java\com\mszlu\blog\controller\UploadController.java
