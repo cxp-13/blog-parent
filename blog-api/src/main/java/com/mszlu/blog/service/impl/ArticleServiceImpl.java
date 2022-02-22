@@ -185,6 +185,7 @@ public class ArticleServiceImpl implements ArticleService {
             article.setTitle(articleParam.getTitle());
             article.setSummary(articleParam.getSummary());
             article.setCategoryId(Long.parseLong(articleParam.getCategory().getId()));
+            articleMapper.updateById(article);
 
 
         } else {

@@ -67,6 +67,8 @@ public class CacheAspect {
             long expire = annotation.expire();
             //缓存名称
             String name = annotation.name();
+//在view_article中消息队列会清除缓存，但是这边获取缓存的速度太快。所以延时，等待队列的消费者清除缓存后在获取。
+            Thread.sleep(1000);
             //先从redis获取
             String redisKey = name + "::" + className + "::" + methodName + "::" + params;
             String redisValue = redisTemplate.opsForValue().get(redisKey);
