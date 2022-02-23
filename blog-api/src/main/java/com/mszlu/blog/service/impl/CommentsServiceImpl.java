@@ -7,6 +7,7 @@ import com.mszlu.blog.dao.pojo.Comment;
 import com.mszlu.blog.dao.pojo.SysUser;
 import com.mszlu.blog.service.CommentsService;
 import com.mszlu.blog.service.SysUserService;
+import com.mszlu.blog.service.ThreadService;
 import com.mszlu.blog.service.utils.UserThreadLocal;
 import com.mszlu.blog.vo.CommentVo;
 import com.mszlu.blog.vo.Result;
@@ -27,6 +28,8 @@ public class CommentsServiceImpl implements CommentsService {
     private CommentMapper commentMapper;
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private ThreadService threadService;
 
     @Override
     public Result commentsByArticleId(Long id) {
@@ -42,6 +45,9 @@ public class CommentsServiceImpl implements CommentsService {
 
     @Override
     public Result comment(CommentParam commentParam) {
+
+        threadService.updateArticleCommentCount(commentParam.getArticleId());
+
         SysUser sysUser = UserThreadLocal.get();
         Comment comment = new Comment();
         comment.setArticleId(commentParam.getArticleId());

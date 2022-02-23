@@ -238,7 +238,7 @@ public class ArticleServiceImpl implements ArticleService {
             articleBodyMapper.update(articleBody, bodyLambdaQueryWrapper);
 
             ArticleBody one = articleBodyMapper.selectOne(bodyLambdaQueryWrapper);
-            article.setBodyId(articleBody.getId());
+            article.setBodyId(one.getId());
 
         } else {
             articleBodyMapper.insert(articleBody);

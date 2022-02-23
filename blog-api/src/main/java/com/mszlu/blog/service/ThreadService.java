@@ -3,11 +3,16 @@ package com.mszlu.blog.service;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.mszlu.blog.dao.mapper.ArticleMapper;
 import com.mszlu.blog.dao.pojo.Article;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ThreadService {
+    @Autowired
+    private ArticleMapper articleMapper;
+
+
     @Async("taskExecutor")
     public void updateArticleViewCount(ArticleMapper articleMapper, Article article) {
         int viewCounts = article.getViewCounts();
@@ -24,5 +29,17 @@ public class ThreadService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Async("taskExecutor")
+    public void updateArticleCommentCount(Long articleId) {
+
+        Article article = articleMapper.selectById(articleId);
+        article.setCommentCounts(article.getCommentCounts() + 1);
+        LambdaUpdateWrapper<Article> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(Article::getId, articleId);
+        articleMapper.updateById(article);
+
+
     }
 }
